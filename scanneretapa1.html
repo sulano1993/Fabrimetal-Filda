@@ -1,19 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Scanner QR Fabrimetal</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-body{
-font-family:Arial;
-text-align:center;
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
 }
 
-#reader{
-width:300px;
-margin:auto;
+h2 {
+    margin-top: 20px;
+}
+
+#reader {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+}
+
+#resultado {
+    margin-top:20px;
+    font-size:18px;
 }
 
 </style>
@@ -22,36 +40,85 @@ margin:auto;
 
 <body>
 
-<h2>
-Ler QR da Estação
-</h2>
+
+<h2>Leitor QR Code</h2>
 
 <div id="reader"></div>
+
+<div id="resultado">
+A iniciar câmara...
+</div>
 
 
 <script>
 
-function sucesso(qr){
 
-    alert("Estação encontrada: " + qr);
+function iniciarScanner(){
 
-    window.location.href = qr;
+
+const scanner = new Html5Qrcode("reader");
+
+
+const config = {
+    fps: 10,
+    qrbox: {
+        width:250,
+        height:250
+    }
+};
+
+
+// FORÇA CÂMARA TRASEIRA
+
+scanner.start(
+    
+    {
+        facingMode:{
+            exact:"environment"
+        }
+    },
+
+    config,
+
+
+    (codigoQR)=>{
+
+
+        document.getElementById("resultado").innerHTML =
+        "Código encontrado: " + codigoQR;
+
+
+        scanner.stop();
+
+
+        // ABRIR LINK DO QR
+
+        window.location.href = codigoQR;
+
+
+    },
+
+
+    (erro)=>{
+
+    }
+
+
+)
+
+.catch(err=>{
+
+
+    document.getElementById("resultado").innerHTML =
+    "Erro ao abrir câmara: " + err;
+
+
+});
 
 }
 
 
-let scanner = new Html5QrcodeScanner(
-"reader",
-{
-fps:10,
-qrbox:250
-}
-);
-
-
-scanner.render(
-sucesso
-);
+iniciarScanner();
 
 
 </script>
