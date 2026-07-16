@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scanner QR Fabrimetal</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+}
+
+#reader{
+width:300px;
+margin:auto;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>
+Ler QR da Estação
+</h2>
+
+<div id="reader"></div>
+
+
+<script>
+
+function sucesso(qr){
+
+    alert("Estação encontrada: " + qr);
+
+    window.location.href = qr;
+
+}
+
+
+let scanner = new Html5QrcodeScanner(
+"reader",
+{
+fps:10,
+qrbox:250
+}
+);
+
+
+scanner.render(
+sucesso
+);
+
+
+</script>
+
+
+</body>
+</html>
